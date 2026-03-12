@@ -1,0 +1,37 @@
+import pandas as pd
+from scipy.stats import f_oneway
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+df = pd.DataFrame(iris.data, columns=iris.feature_names)
+df['Species'] = iris.target
+df['Species'] = df['Species'].map({0: 'Iris-setosa', 1: 'Iris-versicolor', 2: 'Iris-virginica'})
+
+df.rename(columns={'sepal length (cm)': 'SepalLengthCm'}, inplace=True)
+
+print(df.head())
+
+setosa = df[df['Species'] == 'Iris-setosa']['SepalLengthCm']
+versicolor = df[df['Species'] == 'Iris-versicolor']['SepalLengthCm']
+virginica = df[df['Species'] == 'Iris-virginica']['SepalLengthCm']
+
+f_statistic, p_value = f_oneway(setosa, versicolor, virginica)
+
+print("\nOne-Way ANOVA Result")
+print("F-statistic:", f_statistic)
+print("P-value:", p_value)
+
+if p_value < 0.05:
+    print("Result: Reject Null Hypothesis (Significant Difference Exists)")
+else:
+    print("Result: Fail to Reject Null Hypothesis (No Significant Difference)")
+
+tukey = pairwise_tukeyhsd(
+    endog=df['SepalLengthCm'],
+    groups=df['Species'],
+    alpha=0.05
+)
+
+print("\nPost-Hoc Test (Tukey HSD) Results:")
+print(tukey)
