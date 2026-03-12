@@ -1,0 +1,22 @@
+import numpy as np
+from scipy import stats
+import matplotlib.pyplot as plt
+np.random.seed(42)
+sample1 = np.random.normal(loc=10, scale=2, size=30)
+sample2 = np.random.normal(loc=12, scale=2, size=30)
+t_statistic, p_value = stats.ttest_ind(sample1, sample2)
+alpha = 0.05
+print("Results of Two-sample t-test:")
+print(f'T-statistic:{t_statistic}')
+print(f'P-value:{p_value}')
+print(f"Degree of Freedom: {len(sample1) + len(sample2)-2}")
+plt.figure(figsize = (10, 6))
+plt.hist(sample1, alpha = 0.5, label = 'Sample 1', color = 'blue')
+plt.hist(sample2, alpha=0.5, label='Sample 2')
+plt.axvline(np.mean(sample1), linestyle='--', linewidth=2, label='Mean Sample 1')
+plt.axvline(np.mean(sample2), linestyle='--', linewidth=2, label='Mean Sample 2')
+plt.title('Distribution of Sample 1 and Sample 2')
+plt.xlabel('Values')
+plt.ylabel('Frequency')
+plt.legend()
+plt.show()
