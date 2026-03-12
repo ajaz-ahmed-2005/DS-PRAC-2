@@ -1,0 +1,23 @@
+import numpy as np
+from scipy.stats import ttest_ind
+
+sample1 = np.array([12, 15, 14, 10, 13])
+sample2 = np.array([8, 9, 7, 10, 6])
+
+alpha = 0.05
+
+t_statistic, p_value = ttest_ind(sample1, sample2)
+
+print("T-statistic:", t_statistic)
+print("P-value:", p_value)
+
+if p_value < alpha:
+    if np.mean(sample1) > np.mean(sample2):
+        print("Conclusion: There is significant evidence to reject the null hypothesis.")
+        print("Interpretation: The mean of Sample 1 is significantly higher than that of Sample 2.")
+    else:
+        print("Conclusion: There is significant evidence to reject the null hypothesis.")
+        print("Interpretation: The mean of Sample 2 is significantly higher than that of Sample 1.")
+else:
+    print("Conclusion: Fail to reject the null hypothesis.")
+    print("Interpretation: There is not enough evidence to claim a significant difference between the means.")
